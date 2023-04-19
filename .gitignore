@@ -3,6 +3,6 @@
 
 # files
 /Cargo.lock
-/src/asm/**/*.o
+/asm/**/*.o
 /build/**/*.bin
 /build/**/*.iso

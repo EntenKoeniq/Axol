@@ -3,8 +3,11 @@
 #![feature(panic_info_message)]
 
 use core::arch::asm;
-use core::panic::PanicInfo;
 
+#[macro_use]
+mod macros;
+
+mod unwind;
 mod drivers;
 
 #[no_mangle]
@@ -12,11 +15,11 @@ extern fn _start() -> !
 {
   drivers::screen::screen_clear();
   
-  drivers::screen::set_color(drivers::screen::Colors::LightBlue as u8, drivers::screen::Colors::Black as u8);
+  set_color!(9, 0);
   println!(".---..-..-..----..-.");
   println!("| | | >  < | || || |__");
   println!("`-^-''-'`-``----'`----'\n");
-  drivers::screen::set_color(drivers::screen::Colors::LightGrey as u8, drivers::screen::Colors::Black as u8);
+  set_color!();
   
   println!("Loading...");
   
@@ -29,24 +32,12 @@ extern fn _start() -> !
   }
 }
 
-#[panic_handler]
-fn panic(info: &PanicInfo) -> !
-{
-  drivers::screen::set_color(drivers::screen::Colors::LightRed as u8, drivers::screen::Colors::Black as u8);
-  println!("{}", info.message().unwrap());
-  drivers::screen::set_color(drivers::screen::Colors::White as u8, drivers::screen::Colors::Black as u8);
-  
-  loop
-  {
-    hlt();
-  }
-}
-
 // This allows the CPU to go into a sleep state where it consumes much less energy.
 // Example: With an Intel Core i5 11400 in QEMU i get ~15% CPU usage without and ~0.2% with
 // https://en.wikipedia.org/wiki/HLT_(x86_instruction)
+#[doc(hidden)]
 #[inline(always)]
-fn hlt()
+pub(crate) fn hlt()
 {
   unsafe { asm!("hlt"); }
 }

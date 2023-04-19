@@ -2,7 +2,7 @@
 # $< = first dependency
 # $^ = all dependencies
 
-OBJECTS := $(patsubst %.asm,%.o,$(shell find src/asm -name '*.asm'))
+OBJECTS := $(patsubst %.asm,%.o,$(shell find asm/ -name '*.asm'))
 
 default: build/kernel
 

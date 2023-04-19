@@ -6,28 +6,6 @@ static mut SCREEN_SCHEME: u8 = 0;
 const VGA_WIDTH: u16 = 80;
 const VGA_HEIGHT: u16 = 25;
 
-#[allow(dead_code)]
-#[repr(u8)]
-pub(crate) enum Colors
-{
-  Black = 0,
-  Blue = 1,
-  Green = 2,
-  Cyan = 3,
-  Red = 4,
-  Magenta = 5,
-  Brown = 6,
-  LightGrey = 7,
-  DarkGrey = 8,
-  LightBlue = 9,
-  LightGreen = 10,
-  LightCyan = 11,
-  LightRed = 12,
-  LightMagenta = 13,
-  LightBrown = 14,
-  White = 15
-}
-
 pub(crate) fn set_color(fg: u8, bg: u8)
 {
   unsafe
@@ -101,28 +79,6 @@ pub(crate) fn _print(text: &str)
   {
     print_char(c);
   }
-}
-
-#[macro_export]
-macro_rules! print
-{
-  ($($arg:tt)*) =>
-  {
-    // we can use up to 1023 letters
-    let mut buf: [u8; 1024] = [0u8; 1024];
-    match $crate::drivers::screen::write_to::show(&mut buf, format_args!($($arg)*))
-    {
-      Ok(text) => $crate::drivers::screen::_print(text),
-      Err(error) => panic!("panicked at `screen->print`, {}", error)
-    }
-  };
-}
-
-#[macro_export]
-macro_rules! println
-{
-  () => ($crate::print!("\n"));
-  ($($arg:tt)*) => ($crate::print!("{}\n", format_args!($($arg)*)));
 }
 
 #[doc(hidden)]
