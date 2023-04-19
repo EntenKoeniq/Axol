@@ -1,0 +1,13 @@
+[package]
+name = "axol"
+version = "0.1.0"
+edition = "2021"
+
+[lib]
+crate-type = ["staticlib"]
+
+[dependencies]
+# Don't use dependencies if we can write them ourselves
+
+[profile.release]
+panic = "abort"

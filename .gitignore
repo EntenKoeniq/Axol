@@ -1,0 +1,8 @@
+# folders
+/target
+
+# files
+/Cargo.lock
+/src/asm/**/*.o
+/build/**/*.bin
+/build/**/*.iso
